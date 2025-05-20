@@ -8,37 +8,42 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
         tags: [],
         priority: "",
         isFavorite: false
-    })
+    });
 
-    const [isAdd, setIsAdd] = useState(Object.is(tastToUpdate, null))
+    const [isAdd] = useState(tastToUpdate === null);
+
     const handleChange = (e) => {
-        const name = e.target.name
-        let value = e.target.value
+        const name = e.target.name;
+        let value = e.target.value;
 
-        if (name == 'tags') {
-            value = value.split(',')
+        if (name === 'tags') {
+            value = value.split(',').map(tag => tag.trim());
         }
+
         setTask({
             ...task,
             [name]: value
-        })
-    }
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent page reload
+        onSave(task, isAdd);
+    };
 
     return (
         <>
-            <div className="bg-black/70 h-full w-full z-10 absolute top-0 left-0"></div>
-            <form className="mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11 z-10 absolute top-1/7 left-2/7">
-                <h2
-                    className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]"
-                >
-                    {
-                        isAdd ? 'Add New Task' : 'Update Task'
-                    }
+            <div className="bg-black/70 h-full w-full z-10 fixed top-0 left-0"></div>
+            <form
+                onSubmit={handleSubmit}
+                className="mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11 z-20 fixed top-1/7 left-2/7"
+            >
+                <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
+                    {isAdd ? 'Add New Task' : 'Update Task'}
                 </h2>
 
-                {/* <!-- inputs --> */}
                 <div className="space-y-9 text-white lg:space-y-10">
-                    {/* <!-- title --> */}
+                    {/* Title */}
                     <div className="space-y-2 lg:space-y-3">
                         <label htmlFor="title">Title</label>
                         <input
@@ -51,26 +56,25 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
                             required
                         />
                     </div>
-                    {/* <!-- description --> */}
+
+                    {/* Description */}
                     <div className="space-y-2 lg:space-y-3">
                         <label htmlFor="description">Description</label>
                         <textarea
                             className="block min-h-[120px] w-full rounded-md bg-[#2D323F] px-3 py-2.5 lg:min-h-[180px]"
-                            type="text"
                             name="description"
                             id="description"
                             value={task.description}
                             onChange={handleChange}
-                            required
+                            
                         ></textarea>
                     </div>
-                    {/* <!-- input group --> */}
-                    <div
-                        className="grid-cols-2 gap-x-4 max-md:space-y-9 md:grid lg:gap-x-10 xl:gap-x-20"
-                    >
-                        {/* <!-- tags --> */}
+
+                    {/* Tags and Priority */}
+                    <div className="grid-cols-2 gap-x-4 max-md:space-y-9 md:grid lg:gap-x-10 xl:gap-x-20">
+                        {/* Tags */}
                         <div className="space-y-2 lg:space-y-3">
-                            <label htmlFor="tags">Tags</label>
+                            <label htmlFor="tags">Tags (comma separated)</label>
                             <input
                                 className="block w-full rounded-md bg-[#2D323F] px-3 py-2.5"
                                 type="text"
@@ -78,10 +82,11 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
                                 id="tags"
                                 value={task.tags}
                                 onChange={handleChange}
-                                required
+                                
                             />
                         </div>
-                        {/* <!-- priority --> */}
+
+                        {/* Priority */}
                         <div className="space-y-2 lg:space-y-3">
                             <label htmlFor="priority">Priority</label>
                             <select
@@ -90,7 +95,7 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
                                 id="priority"
                                 value={task.priority}
                                 onChange={handleChange}
-                                required
+                                
                             >
                                 <option value="">Select Priority</option>
                                 <option value="Low">Low</option>
@@ -100,11 +105,12 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
                         </div>
                     </div>
                 </div>
-                {/* <!-- inputs ends --> */}
+
+                {/* Buttons */}
                 <div className="mt-16 flex justify-between lg:mt-20">
                     <button
-
-                        className="rounded bg-red-600 px-4 py-2 text-white transition-all hover:opacity-80 "
+                        type="button"
+                        className="rounded bg-red-600 px-4 py-2 text-white transition-all hover:opacity-80"
                         onClick={onCloseModal}
                     >
                         Close
@@ -112,14 +118,13 @@ const AddTaskModal = ({ onSave, tastToUpdate, onCloseModal }) => {
                     <button
                         type="submit"
                         className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
-                        onClick={() => onSave(task, isAdd)}
                     >
                         Save
                     </button>
                 </div>
             </form>
         </>
-    )
-}
+    );
+};
 
-export default AddTaskModal
+export default AddTaskModal;

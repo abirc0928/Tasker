@@ -1,89 +1,117 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchTask from './SearchTask'
 import TaskActions from './TaskActions'
 import TaskList from './TaskList'
 import AddTaskModal from './AddTaskModal'
+import NoTaskFound from './NoTaskFound'
+import SearchNorFound from './SearchNorFound'
 
 const TaskBoard = () => {
-    const defualtTast = {
-        'id': crypto.randomUUID(),
-        'title': "Learn React",
-        'description': "I want to Learn React such thanI can treat it like my slave and make it do whatever I want to do.",
-        'tags': ["web", "react", "js"],
-        'priority': "High",
-        'isFavorite': true
-    }
-    const [tasks, setTasks] = useState([defualtTast])
-    const [showAddModal, setShowAddModal] = useState(false)
-    const [tastToUpdate, setTaskToUpdata] = useState(null)
+
+    const defaultTask = {
+        id: crypto.randomUUID(),
+        title: "Learn React",
+        description: "I want to Learn React such that I can treat it like my slave and make it do whatever I want to do.",
+        tags: ["web", "react", "js"],
+        priority: "High",
+        isFavorite: true
+    };
+
+    const [allTasks, setAllTasks] = useState([defaultTask]);
+    const [tasks, setTasks] = useState([defaultTask]);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [taskToUpdate, setTaskToUpdate] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        const filtered = allTasks.filter(task =>
+            task.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setTasks(filtered);
+    }, [allTasks, searchTerm]);  // 
 
     const handleAddEditTask = (newTask, isAdd) => {
+        let updatedTasks;
+
         if (isAdd) {
-            setTasks([...tasks, newTask])
+            updatedTasks = [...allTasks, newTask];
         } else {
-            setTasks(
-                tasks.map((task) => {
-                    if (task.id === newTask.id) {
-                        setTaskToUpdata(null)
-                        return newTask
-                    }
-                    return task
-                })
-            )
+            updatedTasks = allTasks.map(task =>
+                task.id === newTask.id ? newTask : task
+            );
+            setTaskToUpdate(null);
         }
 
-        setShowAddModal(false)
-    }
+        setAllTasks(updatedTasks);
+        setShowAddModal(false);
+    };
 
     const handleCloseModal = () => {
-        setShowAddModal(false)
-        setTaskToUpdata(null)
-    }
-
+        setShowAddModal(false);
+        setTaskToUpdate(null);
+    };
 
     const handleEditTask = (task) => {
-        // console.log(task)
-        setTaskToUpdata(task)
-        setShowAddModal(true)
-    }
+        setTaskToUpdate(task);
+        setShowAddModal(true);
+    };
 
     const handleDeleteTask = (taskId) => {
-        setTasks(
-            tasks.filter(task => task.id !== taskId)
-        )
-    }
+        const updatedTasks = allTasks.filter(task => task.id !== taskId);
+        setAllTasks(updatedTasks);
+    };
 
     const onDeleteAllTask = () => {
-        setTasks([])
-    }
+        setAllTasks([]);
+    };
 
     const handleFavIcon = (taskID) => {
-        const taskIndex = tasks.findIndex(task => task.id === taskID)
+        const updatedTasks = allTasks.map(task =>
+            task.id === taskID ? { ...task, isFavorite: !task.isFavorite } : task
+        );
+        setAllTasks(updatedTasks);
+    };
 
-        const newTasks = [...tasks]
+    const handleSearchTask = (term) => {
+        setSearchTerm(term);
+    };
 
-        newTasks[taskIndex].isFavorite = !newTasks[taskIndex].isFavorite
-
-        setTasks(newTasks)
-    }
     return (
         <section className="mb-20" id="tasks">
-            {showAddModal && <AddTaskModal
-                onSave={handleAddEditTask}
-                onCloseModal={handleCloseModal}
-                tastToUpdate={tastToUpdate}
-            ></AddTaskModal>}
+            {showAddModal && (
+                <AddTaskModal
+                    onSave={handleAddEditTask}
+                    onCloseModal={handleCloseModal}
+                    tastToUpdate={taskToUpdate}
+                />
+            )}
             <div className="container">
-                {/* <!-- Search Box --> */}
-                <SearchTask></SearchTask>
-                {/* <!-- Search Box Ends --> */}
+                <SearchTask onSerchTerm={handleSearchTask} />
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-                    <TaskActions onAddClick={() => setShowAddModal(!showAddModal)} onDeleteAllTask={onDeleteAllTask}></TaskActions>
-                    <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} onFav={handleFavIcon}></TaskList>
+                    <TaskActions
+                        onAddClick={() => setShowAddModal(true)}
+                        onDeleteAllTask={onDeleteAllTask}
+                    />
+                    {
+                        allTasks.length === 0 ? (
+                            <NoTaskFound />
+                        ) : tasks.length === 0 ? (
+                            <SearchNorFound />
+                        ) : (
+                            <TaskList
+                                tasks={tasks}
+                                onEdit={handleEditTask}
+                                onDelete={handleDeleteTask}
+                                onFav={handleFavIcon}
+                            />
+                        )
+                    }
+
+
                 </div>
             </div>
         </section>
     )
 }
 
-export default TaskBoard
+export default TaskBoard;

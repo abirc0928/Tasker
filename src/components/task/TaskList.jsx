@@ -1,9 +1,7 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
 const TaskList = ({ tasks, onEdit, onDelete, onFav}) => {
-    if (!tasks || tasks.length === 0) {
-        return <p className="text-white text-center">No Tasks Listed</p>;
-    }
+   
     return (
         <div className="overflow-auto">
             <table className="table-fixed overflow-auto xl:w-full">
