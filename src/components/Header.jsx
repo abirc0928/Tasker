@@ -6,7 +6,7 @@ const Header = () => {
 		<div className="container mx-auto flex items-center justify-between gap-x-6">
 			{/* <!-- Logo --> */}
 			<a href="/">
-				<img className="h-[45px]" src="logo.png" alt="Lws" />
+				<img className="h-[45px]" src="lws-logo-en.svg" alt="Lws" />
 			</a>
 			{/* <!-- Logo Ends --> */}
 		</div>
