@@ -1,13 +1,36 @@
-# React + Vite
+# Tasker - React Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live Demo 👉 [https://simpletaskerapp.netlify.app/](https://simpletaskerapp.netlify.app/)
 
-Currently, two official plugins are available:
+Tasker is a simple, fast, and beautifully styled **Task Management App** built using **React** and **Tailwind CSS**. Whether you're managing daily goals, project tasks, or long-term objectives, Tasker helps you **organize, prioritize, and stay productive**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> _"Effortlessly Organize, Prioritize, and Conquer Tasks with Tasker - Your Personal Productivity Ally for Seamless Goal Achievement and Stress-Free Task Management."_
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-"# Tasker" 
+## ✨ Features
+
+- ✅ **Add New Tasks** – Quickly input task details including title, description, tags, and priority.
+- 📝 **Edit Tasks** – Modify existing task information with ease.
+- ❌ **Delete Individual or All Tasks** – Stay decluttered with single or bulk delete options.
+- 🔍 **Dynamic Search** – Instantly filter tasks by title or tags.
+- ⭐ **Mark Favorite Tasks** – Highlight important tasks for quick access.
+- 💡 **Responsive Design** – Fully optimized for mobile, tablet, and desktop.
+
+---
+
+## 🛠 Tech Stack
+
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/) – Lightning-fast build tool
+
+---
+
+## 📦 Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/abirc0928/Tasker.git
+cd tasker
